@@ -1,0 +1,22 @@
+{
+  "CONTRACT_ADDRESS": "0x73e6E8ef2F14878574D435B3c670275baabd9b88",
+  "NFT_LINK": "https://ropsten.etherscan.io/address/0x73e6e8ef2f14878574d435b3c670275baabd9b88",
+  "STAKE_LINK": "https://ropsten.etherscan.io/address/0xe8Fd0f6963887ea04A11C8cdC2C26f63D5695A25",
+  "TOKEN_LINK": "https://ropsten.etherscan.io/address/0x54d3fc5230c02cd4838601409a348041655903a2",
+  "NETWORK": {
+    "NAME": "Ropsten",
+    "SYMBOL": "Ropsten",
+    "ID": 3
+  },
+  "NFT_NAME": "Tower of the Occult",
+  "SYMBOL": "Occult",
+  "MAX_SUPPLY": 7777,
+  "WEI_COST": 0,
+  "DISPLAY_COST": 0,
+  "GAS_LIMIT": 285000,
+  "MARKETPLACE": "Opeansea",
+  "MARKETPLACE_LINK": "https://opensea.io/collection/nerdy-coder-clones",
+  "SHOW_BACKGROUND": true,
+  "TOKEN_ADDRESS": "0x54d3fc5230c02cd4838601409a348041655903a2",
+  "STAKE_ADDRESS": "0xe8Fd0f6963887ea04A11C8cdC2C26f63D5695A25"
+}
