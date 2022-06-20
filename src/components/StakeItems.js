@@ -1,4 +1,4 @@
-export const WalletItems = ({ number, images, selected, onSelect }) => {
+export const StakeItems = ({ number, images, toStake, onSelectStake }) => {
   const imgUrl = `${number + 1}.png`;
 
   if (!images[imgUrl]) {
@@ -6,26 +6,22 @@ export const WalletItems = ({ number, images, selected, onSelect }) => {
     return null;
   }
 
-  const isSelected = selected.includes(number);
-
-  console.log(
-    `${number} is currently ${isSelected ? "selected" : "unselected"}`
-  );
+  const isSelected = toStake.includes(number);
 
   return (
     <img
       style={{
         cursor: "pointer",
-        width: "100px",
+        width: "150px",
         border: isSelected ? "2px solid green" : "initial", // do whatever to indicate it's selected
+        borderRadius: "8px",
       }}
       src={images[imgUrl].default}
       alt={"coin"}
       key={number.toString()}
       onClick={(e) => {
         e.preventDefault();
-        onSelect(number); // Let `onSelect` figure out what to do with it
-        //console.log("selected: ", number);
+        onSelectStake(number);
       }}
     />
   );

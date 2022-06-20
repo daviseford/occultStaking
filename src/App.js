@@ -5,6 +5,7 @@ import { fetchData } from "./redux/data/dataActions";
 import * as s from "./styles/globalStyles";
 import styled from "styled-components";
 import { WalletItems } from "./components/WalletItems";
+import { StakeItems } from "./components/StakeItems";
 //import ReactSelect from 'react-select';
 
 const truncate = (input, len) =>
@@ -128,12 +129,11 @@ function App() {
     let gasLimit = CONFIG.GAS_LIMIT;
     let totalGasLimit = String(gasLimit * nftlist.length);
     console.log("Gas limit: ", totalGasLimit);
-    
+
     if (nftlist.length == 0) {
       console.log("no nft");
       setFeedback(`First you must select which NFT to stake`);
     } else {
-
       if (data.approval) {
         setClaimingNft(true);
 
@@ -154,16 +154,14 @@ function App() {
           })
           .then((receipt) => {
             console.log(receipt);
-            setFeedback(
-              `The NFT is staked.`
-            );
+            setFeedback(`The NFT is staked.`);
             unselectAll();
             setClaimingNft(false);
             dispatch(fetchData(blockchain.account));
           });
       } else {
-            setFeedback(`Missing approval for ${CONFIG.NFT_NAME}...`);
-            console.log("missing approval");
+        setFeedback(`Missing approval for ${CONFIG.NFT_NAME}...`);
+        console.log("missing approval");
       }
     }
   };
@@ -172,12 +170,11 @@ function App() {
     let gasLimit = CONFIG.GAS_LIMIT;
     let totalGasLimit = String(gasLimit * nftlist.length);
     console.log("Gas limit: ", totalGasLimit);
-    
+
     if (nftlist.length == 0) {
       console.log("no nft");
       setFeedback(`First you must select which NFT to burn`);
     } else {
-
       if (data.approval) {
         setClaimingNft(true);
 
@@ -198,16 +195,14 @@ function App() {
           })
           .then((receipt) => {
             console.log(receipt);
-            setFeedback(
-              `The NFT is burnt.`
-            );
+            setFeedback(`The NFT is burnt.`);
             unselectAll();
             setClaimingNft(false);
             dispatch(fetchData(blockchain.account));
           });
       } else {
-            setFeedback(`Missing approval for ${CONFIG.NFT_NAME}...`);
-            console.log("missing approval");
+        setFeedback(`Missing approval for ${CONFIG.NFT_NAME}...`);
+        console.log("missing approval");
       }
     }
   };
@@ -216,12 +211,11 @@ function App() {
     let gasLimit = CONFIG.GAS_LIMIT;
     let totalGasLimit = String(gasLimit * nftlist.length);
     console.log("Gas limit: ", totalGasLimit);
-    
+
     if (nftlist.length == 0) {
       console.log("no nft");
       setFeedback(`First you must select which NFT to stake`);
     } else {
-
       setClaimingNft(true);
 
       setFeedback(`Unstaking your ${CONFIG.NFT_NAME}...`);
@@ -241,9 +235,7 @@ function App() {
         })
         .then((receipt) => {
           console.log(receipt);
-          setFeedback(
-            `The NFT is unstaked and reward sent.`
-          );
+          setFeedback(`The NFT is unstaked and reward sent.`);
           unselectAllStake();
           setClaimingNft(false);
           dispatch(fetchData(blockchain.account));
@@ -255,7 +247,7 @@ function App() {
     let gasLimit = CONFIG.GAS_LIMIT;
     let totalGasLimit = String(gasLimit);
     console.log("Gas limit: ", totalGasLimit);
-    
+
     setClaimingNft(true);
 
     if (data.approval == false) {
@@ -276,9 +268,7 @@ function App() {
         })
         .then((receipt) => {
           console.log(receipt);
-          setFeedback(
-            `The NFT has approval.`
-          );
+          setFeedback(`The NFT has approval.`);
           setClaimingNft(false);
           dispatch(fetchData(blockchain.account));
         });
@@ -289,7 +279,7 @@ function App() {
     let gasLimit = CONFIG.GAS_LIMIT;
     let totalGasLimit = String(gasLimit);
     console.log("Gas limit: ", totalGasLimit);
-    
+
     setClaimingNft(true);
 
     setFeedback(`Claiming reward for ${CONFIG.NFT_NAME}...`);
@@ -309,9 +299,7 @@ function App() {
       })
       .then((receipt) => {
         console.log(receipt);
-        setFeedback(
-          `The reward was sent to you.`
-        );
+        setFeedback(`The reward was sent to you.`);
         setClaimingNft(false);
         dispatch(fetchData(blockchain.account));
       });
@@ -346,123 +334,63 @@ function App() {
     getData();
   }, [blockchain.account]);
 
-  //const listItems = data.nftOwned.map((nftitem) =>
-  //  <Item item={nftitem} />
-  //);
-
-  //const selected = 0;
-
-  //const nftImages = [
-  //  { value: "0", Label: '0', image: images['1.png'].default},
-  //  { value: "1", Label: '1', image: images['2.png'].default}
-  //]
-
-  //var numbers = data.nftOwned;
-  //for (var i = 1; i < 5; i++) {
-  //    numbers.push(i);
-  //}
-
-  //const listItems = numbers.map((number) =>
-  //<img style={{ cursor: 'pointer', width: "150px", borderRadius: '8px' }} src={images[number + '.png'].default} alt={'coin'} onClick={
-  //    (e) => {
-  //        e.preventDefault();
-  //        changeStake(number)}} 
-  ///>
-  //);
-
   function importImages(r) {
     let images = {};
-    r.keys().forEach((item, index) => { images[item.replace('./', '')] = r(item); });
+    r.keys().forEach((item, index) => {
+      images[item.replace("./", "")] = r(item);
+    });
     return images;
   }
-  
-  const images = importImages(require.context('../src/nftimages', false, /\.(png|jpe?g|svg|mp4)$/));
 
-  console.log({images,data})
+  const images = importImages(
+    require.context("../src/nftimages", false, /\.(png|jpe?g|svg|mp4)$/)
+  );
 
-
-
- 
-
-  const onSelect = number => {
-    setSelected(prevState => {
+  const onSelect = (number) => {
+    setSelected((prevState) => {
       if (prevState.includes(number)) {
-        console.log("unselect: " + number);
         // It was selected previously, unselect it (remove it from the array)
-        return prevState.filter(x => x !== number)
+        return prevState.filter((x) => x !== number);
       }
-      console.log("select: " + number);
+
       // Otherwise, add the number to the array
-      return [...prevState, number]
-    })
-  }
+      return [...prevState, number];
+    });
+  };
 
   // bonus for future use
-  const unselectAll = () => setSelected([])
-  const selectAll = () => setSelected(numbers)
+  const unselectAll = () => setSelected([]);
+  const selectAll = () => setSelected(numbers);
 
-  const stakeItems = data?.stakeList?.map(number => (
-    <img
-      style={{
-        cursor: 'pointer',
-        width: '150px',
-        borderRadius: '8px',
-        borderColor: toStake.includes(number) ? 'green' : 'initial', // do whatever to indicate it's selected
-      }}
-      src={images[(number + 1) + '.png'].default}
-      alt={'coin'}
-      key={number.toString()}
-      onClick={e => {
-        e.preventDefault()
-        onSelectStake(number) // Let `onSelect` figure out what to do with it
-        //console.log("selected: ", number);
-      }}
-    />
-  ))
-
-  const onSelectStake = number => {
-    setSelectedStake(prevState => {
+  const onSelectStake = (number) => {
+    setSelectedStake((prevState) => {
       if (prevState.includes(number)) {
-        console.log("unselect: " + number);
         // It was selected previously, unselect it (remove it from the array)
-        return prevState.filter(x => x !== number)
+        return prevState.filter((x) => x !== number);
       }
-      console.log("select: " + number);
+
       // Otherwise, add the number to the array
-      return [...prevState, number]
-    })
-  }
+      return [...prevState, number];
+    });
+  };
 
   // bonus for future use
-  const unselectAllStake = () => setSelectedStake([])
-  const selectAllStake = () => setSelectedStake(numbers)
+  const unselectAllStake = () => setSelectedStake([]);
+  const selectAllStake = () => setSelectedStake(numbers);
 
-  const burnItems = data.burnList.map(number => (
+  const burnItems = data.burnList.map((number) => (
     <img
       style={{
-        cursor: 'pointer',
-        width: '150px',
-        borderRadius: '8px',
-        borderColor: toStake.includes(number) ? 'green' : 'initial', // do whatever to indicate it's selected
+        cursor: "pointer",
+        width: "150px",
+        borderRadius: "8px",
+        borderColor: toStake.includes(number) ? "green" : "initial", // do whatever to indicate it's selected
       }}
-      src={images[(number + 1) + '.png'].default}
-      alt={'coin'}
+      src={images[number + 1 + ".png"].default}
+      alt={"coin"}
       key={number.toString()}
     />
-  ))
-
-  //const listItems = data.nftOwned.map((nft) =>
-  //<img style={{ cursor: 'pointer', width: "150px", borderRadius: '8px' }} src={images[nft + '-1.png'].default} alt={'coin'} onClick={
-  //    (e) => {
-  //        e.preventDefault();
-  //        stakeNft(number)}} 
-  ///>
-  //);
-
-  //const changeStake = (nftnumber) => {
-  //  console.log("Stake: ", nftnumber);
-  //  setStake(nftnumber);
-  //};
+  ));
 
   return (
     <s.Screen>
@@ -470,7 +398,9 @@ function App() {
         flex={1}
         ai={"center"}
         style={{ padding: 24, backgroundColor: "var(--primary)" }}
-        image={CONFIG.SHOW_BACKGROUND ? "/config/images/char-box-export.png" : null}
+        image={
+          CONFIG.SHOW_BACKGROUND ? "/config/images/char-box-export.png" : null
+        }
       >
         <StyledLogo alt={"logo"} src={"/config/images/play-export.png"} />
         <s.SpacerSmall />
@@ -508,7 +438,8 @@ function App() {
             ) : (
               <>
                 <s.SpacerSmall />
-                {blockchain.account === "" || blockchain.smartContract === null ? (
+                {blockchain.account === "" ||
+                blockchain.smartContract === null ? (
                   <s.Container ai={"center"} jc={"center"}>
                     <s.TextDescription
                       style={{
@@ -551,40 +482,52 @@ function App() {
                         fontWeight: "bold",
                         color: "var(--accent-text)",
                       }}
-                    >
-                    </s.TextTitle>
+                    ></s.TextTitle>
                     <s.SpacerSmall />
                     {Number(data.totalSupply) == 0 ? (
                       <>
-                      <s.TextTitle
-                        style={{ textAlign: "center", color: "var(--accent-text)" }}
-                      >
-                        Loading data.
-                      </s.TextTitle>
+                        <s.TextTitle
+                          style={{
+                            textAlign: "center",
+                            color: "var(--accent-text)",
+                          }}
+                        >
+                          Loading data.
+                        </s.TextTitle>
                       </>
                     ) : (
                       <>
-                      <s.TextTitle
-                        style={{ textAlign: "center", color: "var(--accent-text)" }}
-                      >
-                        $OULS Balance: {data.walletBalance} 
-                        <s.SpacerSmall />
-                        NFT owned: {data.nftBalance}
-                        <s.SpacerSmall />
-                        Number of Stake selected: {selected.length}
-                        <s.SpacerSmall />
-                        Has approval: {data.approval?'yes':'no'}
-                        <s.SpacerSmall />
-                        Number of NFT staked: {data.stakeCount}
-                        <s.SpacerSmall />
-                        Number of NFT burnt: {data.burnCount}
-                        <s.SpacerSmall />
-                        Number of unstake selected: {toStake.length}
-                        <s.SpacerSmall />
-                        Wallet List:
-                        <s.SpacerSmall />
-                        {data?.nftOwned?.map(number => <WalletItems number={number} selected={selected} images={images} onSelect={onSelect} />)}
-                      </s.TextTitle>
+                        <s.TextTitle
+                          style={{
+                            textAlign: "center",
+                            color: "var(--accent-text)",
+                          }}
+                        >
+                          $OULS Balance: {data.walletBalance}
+                          <s.SpacerSmall />
+                          NFT owned: {data.nftBalance}
+                          <s.SpacerSmall />
+                          Number of Stake selected: {selected.length}
+                          <s.SpacerSmall />
+                          Has approval: {data.approval ? "yes" : "no"}
+                          <s.SpacerSmall />
+                          Number of NFT staked: {data.stakeCount}
+                          <s.SpacerSmall />
+                          Number of NFT burnt: {data.burnCount}
+                          <s.SpacerSmall />
+                          Number of unstake selected: {toStake.length}
+                          <s.SpacerSmall />
+                          Wallet List:
+                          <s.SpacerSmall />
+                          {data?.nftOwned?.map((number) => (
+                            <WalletItems
+                              number={number}
+                              selected={selected}
+                              images={images}
+                              onSelect={onSelect}
+                            />
+                          ))}
+                        </s.TextTitle>
                       </>
                     )}
                     <s.TextDescription
@@ -601,44 +544,64 @@ function App() {
                         disabled={claimingNft ? 1 : 0}
                         onClick={(e) => {
                           e.preventDefault();
-                          (data.approval?stakeNFTs(selected):getApproval())
+                          data.approval ? stakeNFTs(selected) : getApproval();
                           getData();
                         }}
                       >
-                        {claimingNft ? "BUSY" : data.approval == false && data.nftBalance > 0 ? "APPROVAL" : "STAKE"}
+                        {claimingNft
+                          ? "BUSY"
+                          : data.approval == false && data.nftBalance > 0
+                          ? "APPROVAL"
+                          : "STAKE"}
                       </StyledButton>
                       <s.SpacerSmall />
                       {data.approval == true && data.nftBalance ? (
-                      <StyledButton
-                        disabled={claimingNft ? 1 : 0}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          (data.approval?burnNFTs(selected):getApproval())
-                          getData();
-                        }}
-                      >
-                        {claimingNft ? "BUSY" : data.approval == false && data.nftBalance > 0 ? "APPROVAL" : "BURN"}
-                      </StyledButton>
-                      ) : (<> </> ) }
+                        <StyledButton
+                          disabled={claimingNft ? 1 : 0}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            data.approval ? burnNFTs(selected) : getApproval();
+                            getData();
+                          }}
+                        >
+                          {claimingNft
+                            ? "BUSY"
+                            : data.approval == false && data.nftBalance > 0
+                            ? "APPROVAL"
+                            : "BURN"}
+                        </StyledButton>
+                      ) : (
+                        <> </>
+                      )}
                     </s.Container>
                     <s.SpacerSmall />
                     <s.Container ai={"center"} jc={"center"} fd={"row"}>
-                    <s.TextTitle
-                      style={{ textAlign: "center", color: "var(--accent-text)" }}
-                    >
-                      Staked List:
-                      <s.SpacerSmall />
-                      {stakeItems}
+                      <s.TextTitle
+                        style={{
+                          textAlign: "center",
+                          color: "var(--accent-text)",
+                        }}
+                      >
+                        Staked List:
+                        <s.SpacerSmall />
+                        {data?.stakeList?.map((number) => (
+                          <StakeItems
+                            number={number}
+                            toStake={toStake}
+                            images={images}
+                            onSelectStake={onSelectStake}
+                          />
+                        ))}
                       </s.TextTitle>
                     </s.Container>
                     <s.SpacerSmall />
                     <s.Container ai={"center"} jc={"center"} fd={"row"}>
-                    <s.SpacerSmall />
-                    <StyledButton
+                      <s.SpacerSmall />
+                      <StyledButton
                         disabled={claimingNft ? 1 : 0}
                         onClick={(e) => {
                           e.preventDefault();
-                          (unstakeNFTs(toStake))
+                          unstakeNFTs(toStake);
                           getData();
                         }}
                       >
@@ -649,7 +612,7 @@ function App() {
                         disabled={claimingNft ? 1 : 0}
                         onClick={(e) => {
                           e.preventDefault();
-                          (claim())
+                          claim();
                           getData();
                         }}
                       >
@@ -662,15 +625,17 @@ function App() {
             )}
             <s.SpacerMedium />
             {Number(data.totalSupply) > 0 ? (
-            <s.TextTitle
-              style={{ textAlign: "center", color: "var(--accent-text)" }}
-            >
-              Burnt List:
-            <s.SpacerSmall />
-            {burnItems}
-            </s.TextTitle>
-            ) : (<> </> )}
-            </s.Container>
+              <s.TextTitle
+                style={{ textAlign: "center", color: "var(--accent-text)" }}
+              >
+                Burnt List:
+                <s.SpacerSmall />
+                {burnItems}
+              </s.TextTitle>
+            ) : (
+              <> </>
+            )}
+          </s.Container>
           <s.SpacerLarge />
         </ResponsiveWrapper>
         <s.SpacerMedium />
@@ -686,23 +651,23 @@ function App() {
           </s.TextDescription>
           <s.SpacerSmall />
           <s.TextDescription
-              style={{
-                textAlign: "center",
-                color: "var(--primary-text)",
-              }}
-            >
-              <StyledLink target={"_blank"} href={CONFIG.NFT_LINK}>
-                NFT Contract {CONFIG.CONTRACT_ADDRESS}
-              </StyledLink>
-              <s.SpacerSmall />
-              <StyledLink target={"_blank"} href={CONFIG.STAKE_LINK}>
-                Staking Contract {CONFIG.STAKE_ADDRESS}
-              </StyledLink>
-              <s.SpacerSmall />
-              <StyledLink target={"_blank"} href={CONFIG.TOKEN_LINK}>
-                Token Contract {CONFIG.TOKEN_ADDRESS}
-              </StyledLink>
-            </s.TextDescription>
+            style={{
+              textAlign: "center",
+              color: "var(--primary-text)",
+            }}
+          >
+            <StyledLink target={"_blank"} href={CONFIG.NFT_LINK}>
+              NFT Contract {CONFIG.CONTRACT_ADDRESS}
+            </StyledLink>
+            <s.SpacerSmall />
+            <StyledLink target={"_blank"} href={CONFIG.STAKE_LINK}>
+              Staking Contract {CONFIG.STAKE_ADDRESS}
+            </StyledLink>
+            <s.SpacerSmall />
+            <StyledLink target={"_blank"} href={CONFIG.TOKEN_LINK}>
+              Token Contract {CONFIG.TOKEN_ADDRESS}
+            </StyledLink>
+          </s.TextDescription>
         </s.Container>
       </s.Container>
     </s.Screen>
