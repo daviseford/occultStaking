@@ -4,6 +4,7 @@ import { connect } from "./redux/blockchain/blockchainActions";
 import { fetchData } from "./redux/data/dataActions";
 import * as s from "./styles/globalStyles";
 import styled from "styled-components";
+import { WalletItems } from "./components/WalletItems";
 //import ReactSelect from 'react-select';
 
 const truncate = (input, len) =>
@@ -377,32 +378,20 @@ function App() {
   
   const images = importImages(require.context('../src/nftimages', false, /\.(png|jpe?g|svg|mp4)$/));
 
+  console.log({images,data})
 
-  const walletItems = data.nftOwned.map(number => (
-    <img
-      style={{
-        cursor: 'pointer',
-        width: '100px',
-        borderColor: selected.includes(number) ? '2px solid green' : 'initial', // do whatever to indicate it's selected
-      }}
-      src={images[(number + 1) + '.png'].default}
-      alt={'coin'}
-      key={number.toString()}
-      onClick={e => {
-        e.preventDefault()
-        onSelect(number) // Let `onSelect` figure out what to do with it
-        //console.log("selected: ", number);
-      }}
-    />
-  ))
+
+
+ 
 
   const onSelect = number => {
     setSelected(prevState => {
-      //console.log("set: ", selected);
       if (prevState.includes(number)) {
+        console.log("unselect: " + number);
         // It was selected previously, unselect it (remove it from the array)
         return prevState.filter(x => x !== number)
       }
+      console.log("select: " + number);
       // Otherwise, add the number to the array
       return [...prevState, number]
     })
@@ -412,7 +401,7 @@ function App() {
   const unselectAll = () => setSelected([])
   const selectAll = () => setSelected(numbers)
 
-  const stakeItems = data.stakeList.map(number => (
+  const stakeItems = data?.stakeList?.map(number => (
     <img
       style={{
         cursor: 'pointer',
@@ -433,11 +422,12 @@ function App() {
 
   const onSelectStake = number => {
     setSelectedStake(prevState => {
-      //console.log("set: ", selected);
       if (prevState.includes(number)) {
+        console.log("unselect: " + number);
         // It was selected previously, unselect it (remove it from the array)
         return prevState.filter(x => x !== number)
       }
+      console.log("select: " + number);
       // Otherwise, add the number to the array
       return [...prevState, number]
     })
@@ -593,7 +583,7 @@ function App() {
                         <s.SpacerSmall />
                         Wallet List:
                         <s.SpacerSmall />
-                        {walletItems}
+                        {data?.nftOwned?.map(number => <WalletItems number={number} selected={selected} images={images} onSelect={onSelect} />)}
                       </s.TextTitle>
                       </>
                     )}
